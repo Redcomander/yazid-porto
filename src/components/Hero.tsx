@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { useTheme } from "next-themes";
 
 const floatingIcons = [
   { icon: "💻", delay: 0 },
@@ -16,7 +15,6 @@ const floatingIcons = [
 export default function Hero() {
   const controls = useAnimation();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const { theme } = useTheme();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -62,7 +60,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          I'm M Yazid Ar-Rosyadi, a Web Developer specializing in Laravel, PHP,
+          I&apos;m M Yazid Ar-Rosyadi, a Web Developer specializing in Laravel, PHP,
           and Tailwind CSS
         </motion.p>
         <motion.div

@@ -12,7 +12,7 @@ export default function AboutMe() {
   const paragraphs = [
     "I am a passionate web developer with expertise in Laravel, PHP, and modern frontend technologies. I love creating elegant, efficient, and user-friendly web applications that solve real-world problems.",
     "With years of experience in full-stack development, I specialize in building scalable web applications that combine powerful backend systems with intuitive user interfaces.",
-    "Beyond coding, I'm deeply committed to staying current with emerging technologies and best practices in web development. I believe in writing clean, maintainable code and creating solutions that make a real difference.",
+    "Beyond coding, I&apos;m deeply committed to staying current with emerging technologies and best practices in web development. I believe in writing clean, maintainable code and creating solutions that make a real difference.",
   ];
 
   useEffect(() => {

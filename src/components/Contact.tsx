@@ -47,14 +47,14 @@ export default function Contact() {
           className="text-5xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400"
           variants={itemVariants}
         >
-          Let's Connect
+          Let&apos;s Connect
         </motion.h2>
         <motion.p
           className="mb-12 text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto"
           variants={itemVariants}
         >
-          Ready to bring your web development ideas to life? I'm just a message
-          away. Let's create something amazing together!
+          Ready to bring your web development ideas to life? I&apos;m just a message
+          away. Let&apos;s create something amazing together!
         </motion.p>
         <motion.div
           className="flex flex-col sm:flex-row justify-center items-center space-y-6 sm:space-y-0 sm:space-x-8"
@@ -88,8 +88,8 @@ export default function Contact() {
         className="mt-20 text-center text-gray-600 dark:text-gray-400"
         variants={itemVariants}
       >
-        <p>Let's turn your vision into reality.</p>
-        <p>I'm excited to hear from you!</p>
+        <p>Let&apos;ss turn your vision into reality.</p>
+        <p>I&apos;sm excited to hear from you!</p>
       </motion.div>
     </section>
   );
