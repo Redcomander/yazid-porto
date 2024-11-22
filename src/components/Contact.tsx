@@ -88,8 +88,8 @@ export default function Contact() {
         className="mt-20 text-center text-gray-600 dark:text-gray-400"
         variants={itemVariants}
       >
-        <p>Let&apos;ss turn your vision into reality.</p>
-        <p>I&apos;sm excited to hear from you!</p>
+        <p>Let&apos;s turn your vision into reality.</p>
+        <p>I&apos;am excited to hear from you!</p>
       </motion.div>
     </section>
   );
