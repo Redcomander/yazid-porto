@@ -1,46 +1,37 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { Code2, Rocket, Users } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect } from "react"
+import Image from "next/image"
+import { Code2, Rocket, Users } from 'lucide-react'
 
 export default function AboutMe() {
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  const [text, setText] = useState("");
+  const [currentTextIndex, setCurrentTextIndex] = useState(0)
+  const [isClient, setIsClient] = useState(false)
 
   const paragraphs = [
     "I am a passionate web developer with expertise in Laravel, PHP, and modern frontend technologies. I love creating elegant, efficient, and user-friendly web applications that solve real-world problems.",
     "With years of experience in full-stack development, I specialize in building scalable web applications that combine powerful backend systems with intuitive user interfaces.",
-    "Beyond coding, I&apos;m deeply committed to staying current with emerging technologies and best practices in web development. I believe in writing clean, maintainable code and creating solutions that make a real difference.",
-  ];
+    "Beyond coding, I'm deeply committed to staying current with emerging technologies and best practices in web development. I believe in writing clean, maintainable code and creating solutions that make a real difference.",
+  ]
 
   useEffect(() => {
-    let i = 0;
-    setText(""); // Reset text when changing paragraphs
-    const typingEffect = setInterval(() => {
-      if (i < paragraphs[currentTextIndex].length) {
-        setText(paragraphs[currentTextIndex].slice(0, i + 1));
-        i++;
-      } else {
-        clearInterval(typingEffect);
-        setTimeout(() => {
-          setCurrentTextIndex((prev) => (prev + 1) % paragraphs.length);
-        }, 2000);
-      }
-    }, 30);
+    setIsClient(true)
+    const timer = setInterval(() => {
+      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % paragraphs.length)
+    }, 5000) // Change text every 10 seconds
 
-    return () => clearInterval(typingEffect);
-  }, [currentTextIndex]);
+    return () => clearInterval(timer)
+  }, [])
 
   const features = [
     { icon: Code2, text: "Full Stack Developer" },
     { icon: Rocket, text: "Performance Enthusiast" },
     { icon: Users, text: "Team Collaborator" },
-  ];
+  ]
 
   return (
-    <section id="about" className="py-20 bg-gray-50 dark:bg-gray-800">
+    <section id="about" className="py-20 bg-white dark:bg-gray-800">
       <div className="container mx-auto px-6">
         <motion.h2
           className="text-4xl font-bold mb-16 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400"
@@ -80,28 +71,31 @@ export default function AboutMe() {
             className="space-y-6"
           >
             <div className="prose prose-lg dark:prose-invert">
-              <motion.p
-                key={currentTextIndex}
-                className="text-lg text-gray-800 dark:text-gray-300 min-h-[150px]"
-              >
-                {text}
-                <motion.span
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.5, repeat: Infinity }}
-                  className="inline-block w-0.5 h-5 bg-current ml-1"
-                />
-              </motion.p>
+              <AnimatePresence mode="wait">
+                {isClient && (
+                  <motion.p
+                    key={currentTextIndex}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-lg text-gray-700 dark:text-gray-300 min-h-[150px]"
+                  >
+                    {paragraphs[currentTextIndex]}
+                  </motion.p>
+                )}
+              </AnimatePresence>
             </div>
             <div className="grid grid-cols-2 gap-4 mt-8">
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
-                  className="flex items-center gap-2 text-gray-800 dark:text-gray-300"
+                  className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
                 >
-                  <feature.icon className="w-5 h-5 text-indigo-600 dark:text-purple-400" />
+                  <feature.icon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   <span>{feature.text}</span>
                 </motion.div>
               ))}
@@ -110,5 +104,6 @@ export default function AboutMe() {
         </div>
       </div>
     </section>
-  );
+  )
 }
+
