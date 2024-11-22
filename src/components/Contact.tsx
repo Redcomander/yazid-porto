@@ -1,42 +1,96 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { WhatsappLogo, GithubLogo } from "phosphor-react";
+
 export default function Contact() {
-  const phoneNumber = '+628117886799' // Replace with your actual WhatsApp number
-  const message = encodeURIComponent('Hi, I\'m interested in your web development services.')
+  const phoneNumber = "+628117886799"; // Replace with your actual WhatsApp number
+  const message = encodeURIComponent(
+    "Hi, I'm interested in your web development services."
+  );
+  const githubUsername = "Redcomander";
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+      },
+    },
+  };
 
   return (
-    <section id="contact" className="py-20 bg-white dark:bg-gray-800">
-      <div className="container mx-auto px-6 text-center">
-        <h2 
-          className="text-3xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 animate-fadeIn"
+    <section
+      id="contact"
+      className="py-32 bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-indigo-900"
+    >
+      <motion.div
+        className="container mx-auto px-6 text-center"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.h2
+          className="text-5xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400"
+          variants={itemVariants}
         >
-          Get in Touch
-        </h2>
-        <p 
-          className="mb-8 text-gray-700 dark:text-gray-300 animate-fadeIn animation-delay-200"
+          Let's Connect
+        </motion.h2>
+        <motion.p
+          className="mb-12 text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto"
+          variants={itemVariants}
         >
-          Interested in working together? Let's chat on WhatsApp!
-        </p>
-        <a
-          href={`https://wa.me/${phoneNumber}?text=${message}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center bg-green-500 text-white py-3 px-6 rounded-full text-lg font-semibold hover:bg-green-600 transition duration-300 animate-fadeIn animation-delay-400"
+          Ready to bring your web development ideas to life? I'm just a message
+          away. Let's create something amazing together!
+        </motion.p>
+        <motion.div
+          className="flex flex-col sm:flex-row justify-center items-center space-y-6 sm:space-y-0 sm:space-x-8"
+          variants={itemVariants}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-6 h-6 mr-2"
+          <motion.a
+            href={`https://wa.me/${phoneNumber}?text=${message}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center bg-green-500 text-white py-4 px-8 rounded-full text-lg font-semibold hover:bg-green-600 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <path
-              fillRule="evenodd"
-              d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Contact via WhatsApp
-        </a>
-      </div>
+            <WhatsappLogo size={24} weight="fill" className="mr-3" />
+            Chat on WhatsApp
+          </motion.a>
+          <motion.a
+            href={`https://github.com/${githubUsername}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center bg-gray-800 text-white py-4 px-8 rounded-full text-lg font-semibold hover:bg-gray-700 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <GithubLogo size={24} weight="fill" className="mr-3" />
+            View on GitHub
+          </motion.a>
+        </motion.div>
+      </motion.div>
+      <motion.div
+        className="mt-20 text-center text-gray-600 dark:text-gray-400"
+        variants={itemVariants}
+      >
+        <p>Let's turn your vision into reality.</p>
+        <p>I'm excited to hear from you!</p>
+      </motion.div>
     </section>
-  )
+  );
 }
-

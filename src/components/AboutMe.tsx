@@ -3,34 +3,30 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Code2, Rocket, Users, Coffee } from "lucide-react";
+import { Code2, Rocket, Users } from "lucide-react";
 
 export default function AboutMe() {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [text, setText] = useState("");
 
   const paragraphs = [
-    "II am a passionate web developer with expertise in Laravel, PHP, and modern frontend technologies. I love creating elegant, efficient, and user-friendly web applications that solve real-world problems.",
-    "WWith years of experience in full-stack development, I specialize in building scalable web applications that combine powerful backend systems with intuitive user interfaces.",
-    "BBeyond coding, I'm deeply committed to staying current with emerging technologies and best practices in web development. I believe in writing clean, maintainable code and creating solutions that make a real difference.",
+    "I am a passionate web developer with expertise in Laravel, PHP, and modern frontend technologies. I love creating elegant, efficient, and user-friendly web applications that solve real-world problems.",
+    "With years of experience in full-stack development, I specialize in building scalable web applications that combine powerful backend systems with intuitive user interfaces.",
+    "Beyond coding, I'm deeply committed to staying current with emerging technologies and best practices in web development. I believe in writing clean, maintainable code and creating solutions that make a real difference.",
   ];
 
   useEffect(() => {
     let i = 0;
+    setText(""); // Reset text when changing paragraphs
     const typingEffect = setInterval(() => {
       if (i < paragraphs[currentTextIndex].length) {
-        setText(
-          (prevText) => prevText + paragraphs[currentTextIndex].charAt(i)
-        );
+        setText(paragraphs[currentTextIndex].slice(0, i + 1));
         i++;
       } else {
         clearInterval(typingEffect);
-        if (currentTextIndex < paragraphs.length - 1) {
-          setTimeout(() => {
-            setText("");
-            setCurrentTextIndex((prev) => prev + 1);
-          }, 2000);
-        }
+        setTimeout(() => {
+          setCurrentTextIndex((prev) => (prev + 1) % paragraphs.length);
+        }, 2000);
       }
     }, 30);
 
@@ -44,7 +40,7 @@ export default function AboutMe() {
   ];
 
   return (
-    <section id="about" className="py-20 bg-white dark:bg-gray-800">
+    <section id="about" className="py-20 bg-gray-50 dark:bg-gray-800">
       <div className="container mx-auto px-6">
         <motion.h2
           className="text-4xl font-bold mb-16 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400"
@@ -86,7 +82,7 @@ export default function AboutMe() {
             <div className="prose prose-lg dark:prose-invert">
               <motion.p
                 key={currentTextIndex}
-                className="text-lg text-gray-700 dark:text-gray-300 min-h-[150px]"
+                className="text-lg text-gray-800 dark:text-gray-300 min-h-[150px]"
               >
                 {text}
                 <motion.span
@@ -100,12 +96,12 @@ export default function AboutMe() {
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
-                  className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
+                  className="flex items-center gap-2 text-gray-800 dark:text-gray-300"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
                 >
-                  <feature.icon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  <feature.icon className="w-5 h-5 text-indigo-600 dark:text-purple-400" />
                   <span>{feature.text}</span>
                 </motion.div>
               ))}

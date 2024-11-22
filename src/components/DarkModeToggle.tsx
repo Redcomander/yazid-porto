@@ -21,7 +21,7 @@ export default function DarkModeToggle() {
       className="relative h-12 w-24 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       whileTap={{ scale: 0.95 }}
-    >
+    > 
       <motion.div
         className="absolute inset-0 rounded-full bg-white opacity-50 dark:bg-gray-800"
         animate={{
