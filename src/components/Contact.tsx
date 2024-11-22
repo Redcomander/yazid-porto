@@ -89,7 +89,7 @@ export default function Contact() {
         variants={itemVariants}
       >
         <p>Let&apos;s turn your vision into reality.</p>
-        <p>I&apos;am excited to hear from you!</p>
+        <p>I&apos;m excited to hear from you!</p>
       </motion.div>
     </section>
   );

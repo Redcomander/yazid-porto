@@ -1,28 +1,35 @@
-'use client'
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Award, Calendar, X, ExternalLink } from 'lucide-react'
-import Image from "next/image"
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import {
+  Award,
+  Calendar,
+  X,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import Image from "next/image";
 
 interface Certificate {
-  id: number
-  name: string
-  issuer: string
-  year: number
-  image: string
+  id: number;
+  name: string;
+  issuer: string;
+  year: number;
+  image: string;
   details: {
-    certNumber?: string
-    fullName: string
-    birthInfo?: string
-    studentId?: string
-    program?: string
-    issueDate?: string
-    director?: string
-    nip?: string
-    achievement?: string
-  }
-  fullCertificateUrl: string
+    certNumber?: string;
+    fullName: string;
+    birthInfo?: string;
+    studentId?: string;
+    program?: string;
+    issueDate?: string;
+    director?: string;
+    NIP?: string;
+    achievement?: string;
+  };
+  fullCertificateUrl: string;
 }
 
 const certificates: Certificate[] = [
@@ -40,7 +47,7 @@ const certificates: Certificate[] = [
       program: "1 Year Computer & Internet Professional Program",
       issueDate: "December 21, 2023",
       director: "Mei Sutrisno",
-      nip: "01.PCT.21",
+      NIP: "01.PCT.21",
     },
     fullCertificateUrl: "/images/completion.png",
   },
@@ -56,58 +63,136 @@ const certificates: Certificate[] = [
     },
     fullCertificateUrl: "/images/best.png",
   },
-]
+];
 
 export default function Certificates() {
-  const [selectedCert, setSelectedCert] = useState<Certificate | null>(null)
+  const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (selectedCert) {
+        if (event.key === "Escape") {
+          setSelectedCert(null);
+        } else if (event.key === "ArrowLeft") {
+          navigateCertificate(-1);
+        } else if (event.key === "ArrowRight") {
+          navigateCertificate(1);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedCert]);
+
+  const navigateCertificate = (direction: number) => {
+    const newIndex =
+      certificates.findIndex((cert) => cert.id === selectedCert?.id) +
+      direction;
+    if (newIndex >= 0 && newIndex < certificates.length) {
+      setSelectedCert(certificates[newIndex]);
+    }
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
+  const badgeVariants = {
+    hidden: { scale: 0, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 260,
+        damping: 20,
+        delay: 0.2,
+      },
+    },
+  };
 
   return (
-    <section id="certificates" className="py-20 bg-gray-50 dark:bg-gray-800">
+    <section
+      id="certificates"
+      className="py-20 bg-gray-50 dark:bg-gray-800"
+      ref={ref}
+    >
       <div className="container mx-auto px-6">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
           className="text-4xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400"
         >
           My Certificates
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
           {certificates.map((cert, index) => (
             <motion.div
               key={cert.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              variants={itemVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setSelectedCert(cert)}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:shadow-xl"
+              onClick={() => {
+                setSelectedCert(cert);
+                setCurrentIndex(index);
+              }}
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:shadow-xl flex flex-col"
             >
-              <div className="relative h-48">
+              <div className="relative h-48 overflow-hidden">
                 <Image
                   src={cert.image}
                   alt={cert.name}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-300 transform hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-xl font-semibold text-white">
+              </div>
+              <div className="p-6 flex-grow flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
                     {cert.name}
                   </h3>
-                  <p className="text-sm text-gray-300">{cert.issuer}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {cert.issuer}
+                  </p>
                 </div>
-              </div>
-              <div className="p-4">
-                <div className="flex items-center text-gray-600 dark:text-gray-400">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  <span>{cert.year}</span>
-                </div>
+                <motion.div
+                  variants={badgeVariants}
+                  className="mt-4 flex items-center justify-center bg-purple-100 dark:bg-purple-900 rounded-full py-2 px-4"
+                >
+                  <Calendar className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" />
+                  <span className="text-purple-600 dark:text-purple-400 font-medium">
+                    {cert.year}
+                  </span>
+                </motion.div>
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       <AnimatePresence>
@@ -161,11 +246,15 @@ export default function Certificates() {
                 <div className="space-y-6">
                   <div className="flex items-center space-x-4 text-lg">
                     <Award className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                    <span className="text-gray-800 dark:text-gray-200 font-semibold">{selectedCert.issuer}</span>
+                    <span className="text-gray-800 dark:text-gray-200 font-semibold">
+                      {selectedCert.issuer}
+                    </span>
                   </div>
                   <div className="flex items-center space-x-4 text-lg">
                     <Calendar className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                    <span className="text-gray-800 dark:text-gray-200 font-semibold">{selectedCert.year}</span>
+                    <span className="text-gray-800 dark:text-gray-200 font-semibold">
+                      {selectedCert.year}
+                    </span>
                   </div>
                   {selectedCert.details && (
                     <div className="space-y-4 bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow-inner">
@@ -175,10 +264,15 @@ export default function Certificates() {
                             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
                               {key
                                 .split(/(?=[A-Z])/)
-                                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                                .join(' ')}
+                                .map(
+                                  (word) =>
+                                    word.charAt(0).toUpperCase() + word.slice(1)
+                                )
+                                .join(" ")}
                             </span>
-                            <span className="text-gray-800 dark:text-gray-200">{value}</span>
+                            <span className="text-gray-800 dark:text-gray-200">
+                              {value}
+                            </span>
                           </div>
                         )
                       )}
@@ -186,11 +280,26 @@ export default function Certificates() {
                   )}
                 </div>
               </div>
+              <div className="flex justify-between mt-8">
+                <button
+                  onClick={() => navigateCertificate(-1)}
+                  className="p-2 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300"
+                  disabled={currentIndex === 0}
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={() => navigateCertificate(1)}
+                  className="p-2 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300"
+                  disabled={currentIndex === certificates.length - 1}
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </section>
-  )
+  );
 }
-
